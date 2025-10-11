@@ -22,8 +22,6 @@
             
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Lato', sans-serif;
-            /* New: Base unit size for easier scaling */
-            font-size: 16px; 
         }
 
         *, *::before, *::after {
@@ -41,12 +39,11 @@
             background-color: var(--secondary-color);
             color: var(--text-color);
             line-height: 1.7;
-            /* Changed to use 'rem' for better scaling */
-            font-size: 1.125rem; /* 18px / 16px */
+            font-size: 18px;
             overflow-x: hidden;
             position: relative;
             
-            /* Custom Cursor - kept as is */
+            /* Custom Cursor */
             cursor: url('ring.png'), auto; 
         }
         
@@ -57,6 +54,7 @@
 
         /* --- Full-page Background Image (Placeholder) --- */
         .body-bg-image {
+            /* NOTE: Using the local file path 'background.jpg' for reliability */
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
@@ -70,35 +68,6 @@
             inset: 0;
             background-color: rgba(243, 234, 226, 0.6); /* Semi-transparent ivory overlay */
             z-index: -1;
-        }
-
-        /* ------------------------------------------- */
-        /* --- NEW: In-App Browser Prompt Styling --- */
-        /* ------------------------------------------- */
-        #browser-prompt {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--accent-color); /* Rose Gold */
-            color: var(--light-text-color);
-            padding: 10px 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            z-index: 10000; /* Extremely high z-index to be on top of everything */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            display: none; /* Hidden by default */
-        }
-
-        .hidden-prompt {
-            display: none !important;
-        }
-
-        /* Ensure the main content starts below the banner if it's visible */
-        body.prompt-visible {
-            /* This value needs to match the height of the #browser-prompt */
-            padding-top: 50px; 
         }
 
         /* --- Cover Section (Intro Screen) --- */
@@ -122,7 +91,6 @@
         .cover-content h1 {
             font-family: var(--font-heading);
             color: var(--light-text-color);
-            /* Fluid size for initial H1 */
             font-size: clamp(3rem, 10vw, 5rem);
             font-weight: 700;
             line-height: 1.1;
@@ -133,14 +101,13 @@
             background-color: transparent;
             border: 2px solid var(--accent-color);
             color: var(--accent-color);
-            /* Changed to rem */
-            padding: 0.75rem 2.5rem; 
+            padding: 12px 40px;
             font-family: var(--font-body);
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 3px;
             cursor: pointer;
-            margin-top: 1.875rem; /* 30px */
+            margin-top: 30px;
             transition: background-color 0.4s, color 0.4s;
         }
 
@@ -164,33 +131,28 @@
         }
 
         .container {
-            /* Max width set to rem */
-            max-width: 68.75rem; /* 1100px */
+            max-width: 1100px;
             margin-inline: auto;
-            /* Horizontal padding set to rem */
-            padding-inline: 1.25rem; 
+            padding-inline: 20px;
         }
         
         .section {
-            /* Vertical padding set to rem */
-            padding-block: 7.5rem; /* 120px */
+            padding-block: 120px;
             position: relative;
         }
         
         .section-title {
             font-family: var(--font-heading);
-            /* Fluid size for all section titles */
-            font-size: clamp(2.5rem, 6vw, 4rem); 
+            font-size: clamp(2.5rem, 8vw, 4rem);
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 3.75rem; /* 60px */
+            margin-bottom: 60px;
             font-style: italic;
         }
 
         .fade-in {
             opacity: 0;
-            /* Changed to rem */
-            transform: translateY(2.5rem); 
+            transform: translateY(40px);
             transition: opacity 1.2s ease-out, transform 1.2s ease-out;
         }
 
@@ -214,39 +176,37 @@
         
         .hero .fade-in {
             background-color: rgba(26, 35, 64, 0.4); /* Dark overlay */
-            /* Changed to rem */
-            padding: 2.5rem 3.75rem; 
-            border-radius: 0.625rem; /* 10px */
+            padding: 40px 60px;
+            border-radius: 10px;
             backdrop-filter: blur(5px);
-            box-shadow: 0 0.625rem 1.875rem rgba(0,0,0,0.5); /* 10px 30px */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .hero h1 {
             font-family: var(--font-heading);
-            /* Fluid size for Hero H1 */
-            font-size: clamp(4rem, 15vw, 8rem); 
+            font-size: clamp(4rem, 15vw, 8rem);
             font-weight: 800;
             line-height: 1.1;
             text-shadow: 0px 4px 20px rgba(0,0,0,0.5);
-            margin-bottom: 1.25rem; /* 20px */
+            margin-bottom: 20px;
         }
 
         .hero .date {
             font-size: 1.2rem;
             letter-spacing: 5px;
             text-transform: uppercase;
-            margin-top: 1.25rem; /* 20px */
-            padding: 0.5rem 1.25rem; /* 8px 20px */
+            margin-top: 20px;
+            padding: 8px 20px;
             background-color: rgba(0,0,0,0.3);
             backdrop-filter: blur(5px);
-            border-radius: 0.3125rem; /* 5px */
+            border-radius: 5px;
         }
         
         /* --- Countdown Timer --- */
         #countdown {
-            margin-top: 2.5rem; /* 40px */
+            margin-top: 40px;
             display: flex;
-            gap: 1.25rem; /* 20px */
+            gap: 20px;
             text-align: center;
             justify-content: center;
         }
@@ -254,22 +214,19 @@
         .countdown-item {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 0.9375rem 1.25rem; /* 15px 20px */
-            border-radius: 0.625rem; /* 10px */
+            padding: 15px 20px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            /* Min-width helps prevent crushing */
-            min-width: 5rem; /* 80px */
+            min-width: 80px;
         }
 
         .countdown-item div {
-            /* Changed to rem */
-            font-size: 2.5rem; 
+            font-size: 2.5rem;
             font-weight: 700;
         }
 
         .countdown-item span {
-            /* Changed to rem */
-            font-size: 0.8rem; 
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
@@ -279,18 +236,16 @@
             background: var(--card-bg-color);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 1.25rem; /* 20px */
-            /* Changed to rem */
-            padding: 3.125rem; /* 50px */
+            border-radius: 20px;
+            padding: 50px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0.5rem 2rem 0 rgba(0, 0, 0, 0.1); /* 8px 32px */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
         }
 
         .grid-2-col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            /* Gap set to rem */
-            gap: 3.125rem; /* 50px */
+            gap: 50px;
             align-items: center;
         }
         
@@ -298,7 +253,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0.9375rem; /* 15px */
+            border-radius: 15px;
         }
 
         .text-center { text-align: center; }
@@ -311,19 +266,18 @@
         
         .text-left h3 {
             font-family: var(--font-heading);
-            /* Changed to rem */
-            font-size: 1.75rem; 
+            font-size: 2rem;
             color: var(--primary-color);
-            margin-bottom: 0.9375rem; /* 15px */
+            margin-bottom: 15px;
         }
         
         .parents-list h3 {
             font-family: var(--font-body);
-            /* Changed to rem */
-            font-size: 1.1rem; 
+            font-size: 1.2rem;
             color: var(--text-color);
-            margin-top: 1.25rem; /* 20px */
-            margin-bottom: 0.625rem; /* 10px */
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -335,14 +289,12 @@
         /* Children's Section Specific Styling */
         .children-names {
             font-family: var(--font-heading);
-            /* Changed to rem */
-            font-size: 1.8rem; 
+            font-size: 1.8rem;
             color: var(--accent-color);
-            margin-top: 1.25rem; /* 20px */
+            margin-top: 20px;
             line-height: 1.5;
         }
         .children-info p {
-            /* Kept max-width for better readability on desktop, shrinks on mobile */
             max-width: 80%;
             margin-inline: auto;
         }
@@ -351,107 +303,97 @@
         .event-card {
             text-align: center;
             background-color: var(--secondary-color); 
-            /* Changed to rem */
-            padding: 2.5rem; /* 40px */
-            border-radius: 0.9375rem; /* 15px */
+            padding: 40px;
+            border-radius: 15px;
             transition: transform 0.4s, box-shadow 0.4s;
         }
 
         .event-card:hover {
-            /* Changed to rem */
-            transform: translateY(-0.625rem); /* -10px */
-            box-shadow: 0 0.9375rem 1.875rem rgba(0,0,0,0.1); /* 15px 30px */
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         
         /* Map Styling */
         .event-map {
             width: 100%;
-            height: 12.5rem; /* 200px - kept fixed height for map, which is common */
+            height: 200px;
             border: 1px solid var(--accent-color);
-            border-radius: 0.625rem; /* 10px */
-            margin-top: 1.25rem; /* 20px */
+            border-radius: 10px;
+            margin-top: 20px;
         }
 
         /* --- Attire/Sponsors/RSVP Styling --- */
         .motif-colors {
             display: flex;
             justify-content: center;
-            gap: 0.9375rem; /* 15px */
-            margin-top: 1.25rem; /* 20px */
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .motif-color {
-            /* Changed to rem */
-            width: 3.125rem; /* 50px */
-            height: 3.125rem; /* 50px */
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: 2px solid white;
-            box-shadow: 0 0.25rem 0.625rem rgba(0,0,0,0.2); /* 4px 10px */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .sponsors-grid {
             list-style: none;
             text-align: center;
-            /* Use auto columns to let the browser decide the best fit */
             columns: 2;
-            column-gap: 2.5rem; /* 40px */
+            column-gap: 40px;
             font-size: 0.95rem;
         }
 
         .sponsors-grid li {
-            margin-bottom: 0.9375rem; /* 15px */
+            margin-bottom: 15px;
             font-weight: 300;
-            /* Ensure items don't break across columns */
-            break-inside: avoid-column;
         }
         
         .sponsors-section {
-            margin-top: 1.25rem; /* 20px */
+            margin-top: 20px;
         }
 
         .rsvp-button {
             display: inline-block;
             background-color: var(--accent-color);
             color: var(--light-text-color);
-            /* Changed to rem */
-            padding: 1.125rem 3.75rem; /* 18px 60px */
-            border-radius: 3.125rem; /* 50px */
+            padding: 18px 60px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 1.875rem; /* 30px */
+            margin-top: 30px;
             transition: transform 0.3s, background-color 0.3s;
         }
         
         .rsvp-button:hover {
             background-color: #A47D52;
-            transform: translateY(-0.3125rem); /* -5px */
+            transform: translateY(-5px);
         }
 
         /* --- Footer Styling --- */
         footer {
             text-align: center;
-            /* Changed to rem */
-            padding: 3.75rem 1.25rem 1.25rem 1.25rem; 
+            padding: 60px 20px 20px 20px;
             color: var(--light-text-color);
             background-color: var(--primary-color); 
         }
         
         footer h2 {
             font-family: var(--font-heading);
-            /* Changed to rem */
-            font-size: 2.5rem; 
+            font-size: 2.5rem;
             color: var(--accent-color);
-            margin-bottom: 0.9375rem; /* 15px */
+            margin-bottom: 15px;
         }
         
         .dev-info {
-            /* Changed to rem */
-            font-size: 0.8rem; 
+            font-size: 0.8rem;
             letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.5); 
-            margin-top: 1.25rem; /* 20px */
+            margin-top: 20px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -460,7 +402,7 @@
         .dev-info a {
             color: var(--accent-color);
             text-decoration: none;
-            margin: 0.3125rem 0.625rem; /* 5px 10px */
+            margin: 5px 10px;
             transition: color 0.3s;
         }
         
@@ -468,68 +410,64 @@
             color: var(--light-text-color);
         }
 
-        /* --- Music Control --- (Sizing already proportional) */
+        /* --- Music Control --- */
         #music-control {
-            bottom: 1.5625rem; /* 25px */
-            right: 1.5625rem; /* 25px */
-            width: 3.125rem; /* 50px */
-            height: 3.125rem; /* 50px */
-            /* ... rest of the styles ... */
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 500;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.5s, transform 0.5s;
         }
 
-        /* --- Responsive Design Media Query --- */
+        #music-control.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #music-control svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--light-text-color);
+        }
+        
+        /* Music Icon Logic */
+        #play-icon { display: block; } 
+        #pause-icon { display: none; }
+        
+        #music-control.playing #play-icon { display: none; } 
+        #music-control.playing #pause-icon { display: block; }
+        
+
+        /* --- Responsive Design --- */
         @media (max-width: 768px) {
-            /* For Mobile: The two-column layouts now become a single column to prevent crushing */
             .grid-2-col {
                 grid-template-columns: 1fr;
-                /* Reduce gap on mobile */
-                gap: 2rem; 
             }
-            /* The Sponsors list should be a single column on mobile */
             .sponsors-grid {
                 columns: 1;
-                column-gap: 0;
             }
-            /* Reduce padding inside the glass card on mobile */
-            .glass-card {
-                padding: 2rem; /* 32px */
+             .hero .fade-in {
+                padding: 30px;
             }
-            /* Reduce padding on the hero section overlay */
-            .hero .fade-in {
-                padding: 1.875rem; /* 30px */
-            }
-            /* Reduce vertical padding between main sections */
             .section {
-                padding-block: 5rem; /* 80px */
-            }
-            /* Center the text on the story section when it collapses to one column */
-            #story .text-left {
-                text-align: center;
-            }
-            #story .section-title {
-                text-align: center !important;
-            }
-            /* Ensure parents list text is centered on mobile */
-            .parents-list div {
-                text-align: center;
-            }
-            /* Adjust countdown size for smaller screens */
-            .countdown-item {
-                padding: 0.625rem 0.8rem;
-                min-width: 3.5rem; 
-            }
-            .countdown-item div {
-                font-size: 2rem;
+                padding-block: 80px;
             }
         }
     </style>
 </head>
 <body class="body-bg-image">
 
-    <div id="browser-prompt" class="hidden-prompt">
-        <p>👋 **Looks like you're in an in-app browser!** For the best experience (and music!), please tap the **•••** or **⋮** icon and select **"Open in Chrome/Safari"**.</p>
-    </div>
-    
     <div id="cover">
         <div class="cover-content">
             <h1>June Paolo<br>&<br>Kimberly</h1>
@@ -640,10 +578,10 @@
                                 <h3>Guest Attire & Motif</h3>
                                 <p>Please grace the occasion in your best semi-formal wear. We encourage you to dress in the romantic hues of our wedding palette, avoiding white, cream, and red.</p>
                                  <div class="motif-colors">
-                                     <span class="motif-color" style="background-color: #C08081;" title="Old Rose"></span>
-                                     <span class="motif-color" style="background-color: #FFDAB9;" title="Peach"></span>
-                                     <span class="motif-color" style="background-color: #FFFDD0;" title="Cream (Avoid)"></span>
-                                 </div>
+                                    <span class="motif-color" style="background-color: #C08081;" title="Old Rose"></span>
+                                    <span class="motif-color" style="background-color: #FFDAB9;" title="Peach"></span>
+                                    <span class="motif-color" style="background-color: #FFFDD0;" title="Cream (Avoid)"></span>
+                                </div>
                             </div>
                             <div class="text-center sponsors-section">
                                 <h3>Cherished Principal Sponsors</h3>
@@ -696,23 +634,6 @@
         
         document.addEventListener('DOMContentLoaded', () => {
 
-            // -------------------------------------------
-            // --- NEW: In-App Browser Detection Logic ---
-            // -------------------------------------------
-            function isMessengerInApp() {
-                const ua = navigator.userAgent || navigator.vendor || window.opera;
-                // Detect common webviews that cause issues
-                return ua.indexOf("FBAN/Messenger") > -1 || ua.indexOf("Instagram") > -1 || (ua.indexOf("Line") > -1 && ua.indexOf("Mobile") > -1);
-            }
-
-            const browserPrompt = document.getElementById('browser-prompt');
-
-            if (isMessengerInApp()) {
-                browserPrompt.classList.remove('hidden-prompt');
-                browserPrompt.style.display = 'block';
-                document.body.classList.add('prompt-visible');
-            }
-            
             // --- Content Visibility & Animations ---
             const enterBtn = document.getElementById('enter-btn');
             const cover = document.getElementById('cover');
