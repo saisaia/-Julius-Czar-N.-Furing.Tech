@@ -1,621 +1,461 @@
+
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Furing Julius Czar N. | Technical Systems Specialist</title>
-    <meta name="description" content="Professional Portfolio of Furing Julius Czar N. - IT Programmer and Technical Virtual Assistant specializing in Automation, CRM, and Web Systems.">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    },
-                    colors: {
-                        primary: '#0f172a',
-                        accent: '#3b82f6',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'scroll': 'scroll 20s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        scroll: {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-50%)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Czar's Neural Interface v2</title>
     <style>
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        :root {
+            --bg-color: #050505;
+            /* Primary (Gift/Safe) Colors */
+            --primary: #10a37f;
+            --primary-glow: rgba(16, 163, 127, 0.4);
+            /* Danger (Private/Warning) Colors */
+            --danger: #dc2626;
+            --danger-glow: rgba(220, 38, 38, 0.5);
+            
+            --glass-bg: rgba(20, 20, 20, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #8e8ea0;
         }
-        .code-window {
-            background: #1e293b;
-            border-radius: 12px;
-            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 20px 0;
+            background-color: var(--bg-color);
+            font-family: 'Söhne', 'Segoe UI', Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            min-height: 100vh; /* Allow scrolling if content is tall */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* --- BACKGROUND ANIMATION --- */
+        #neural-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0.4; pointer-events: none;
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .interface-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+            padding-bottom: 50px;
+        }
+
+        /* --- HEADER --- */
+        .brand-header { margin-bottom: 30px; }
+        .gpt-logo {
+            width: 60px; height: 60px; fill: var(--text-main);
+            margin-bottom: 15px; filter: drop-shadow(0 0 15px var(--primary-glow));
+            animation: float 6s ease-in-out infinite;
+        }
+        h1 {
+            font-size: 2.5rem; font-weight: 600; margin: 0;
+            background: linear-gradient(to right, #fff, #b4b4b4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: var(--text-muted); margin-top: 5px; font-size: 1rem; }
+
+        .system-alert {
+            display: inline-flex; align-items: center; gap: 10px; margin-top: 25px;
+            padding: 12px 24px; background: rgba(234, 179, 8, 0.1);
+            border: 1px solid #eab308; border-radius: 50px; color: #fef08a;
+            font-size: 0.9rem; font-family: monospace;
+        }
+
+        /* --- SHARED CARD STYLES --- */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            cursor: pointer;
+            position: relative;
             overflow: hidden;
-            border: 1px solid #334155;
         }
-        .json-key { color: #93c5fd; }
-        .json-string { color: #a5f3fc; }
-        .json-number { color: #fca5a5; }
+        .glass-card::before {
+            content: ''; position: absolute; top:0; left:0; right:0; bottom:0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            opacity: 0; transition: opacity 0.4s; z-index: -1;
+        }
+        .glass-card:hover::before { opacity: 1; }
+
+        /* --- GIFT CARDS SECTION --- */
+        .grid-layout {
+            display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap;
+        }
+        .user-card {
+            width: 280px; height: 380px; border-radius: 24px; padding: 30px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .user-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px -10px var(--primary-glow);
+        }
+        .avatar-circle {
+            width: 80px; height: 80px; border-radius: 50%; background: #1a1a1a;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+            border: 2px solid var(--glass-border); font-size: 1.5rem; transition: all 0.4s;
+        }
+        .user-card:hover .avatar-circle {
+            background: var(--primary); border-color: #fff; color: #000; transform: rotate(360deg);
+        }
+        .card-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 5px; }
+        .card-desc { color: var(--text-muted); font-size: 0.9rem; }
+        .card-badge {
+            margin-top: 20px; padding: 6px 12px; border-radius: 20px;
+            background: rgba(16, 163, 127, 0.1); color: var(--primary);
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        /* --- SECTION DIVIDER --- */
+        .section-divider {
+            margin: 60px auto 30px;
+            width: 100%;
+            max-width: 600px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-family: monospace; letter-spacing: 2px;
+        }
+        .section-divider::before, .section-divider::after {
+            content: ''; height: 1px; background: var(--glass-border); flex: 1; margin: 0 20px;
+            box-shadow: 0 0 10px var(--danger-glow);
+        }
+
+        /* --- PRIVATE SECTION --- */
+        .private-grid {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            max-width: 800px; margin: 0 auto;
+        }
+        .private-card {
+            width: 140px; height: 140px; border-radius: 16px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 10px; font-weight: 600; font-size: 0.9rem; color: var(--text-muted);
+            border-color: rgba(220, 38, 38, 0.2); /* Subtle red tint border */
+        }
+        .private-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--danger);
+            box-shadow: 0 10px 30px -5px var(--danger-glow);
+            color: var(--text-main);
+        }
+        .lock-icon { font-size: 1.8rem; transition: color 0.3s; }
+        .private-card:hover .lock-icon { color: var(--danger); }
+
+
+        /* --- MODALS SHARED --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s;
+        }
+        .modal-active { opacity: 1; pointer-events: all; }
+        .modal-box {
+            background: #0f0f0f; border: 1px solid var(--glass-border);
+            width: 90%; max-width: 450px; padding: 40px; border-radius: 24px;
+            text-align: center; transform: scale(0.9); position: relative; overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        .modal-active .modal-box { transform: scale(1); }
+        .btn-close {
+            position: absolute; top: 20px; right: 20px; background: none;
+            border: none; color: #555; cursor: pointer; font-size: 1.5rem;
+        }
+        .btn-close:hover { color: white; }
+
+        /* --- AUTH & REVEAL MODAL SPECIFICS --- */
+        .input-group { margin: 30px 0; }
+        .pass-input {
+            width: 100%; background: transparent; border: none; border-bottom: 2px solid #333;
+            padding: 10px; color: white; font-size: 1.5rem; text-align: center; font-family: monospace; outline: none; transition: border-color 0.3s;
+        }
+        .pass-input:focus { border-color: var(--primary); }
+        .btn-unlock {
+            background: white; color: black; border: none; padding: 16px 40px;
+            border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s; width: 100%;
+        }
+        .btn-unlock:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        .reveal-row {
+            display: flex; justify-content: space-between; padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;
+        }
+        .reveal-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; }
+        .reveal-value { font-family: monospace; font-size: 1.1rem; color: var(--primary); font-weight: bold;}
+        .hack-text { font-family: monospace; }
+
+        /* --- WARNING MODAL SPECIFICS --- */
+        .danger-box {
+            border-color: var(--danger);
+            box-shadow: 0 0 50px var(--danger-glow);
+        }
+        .warning-header {
+            color: var(--danger); font-size: 4rem; margin-bottom: 10px;
+        }
+        .glitch-text {
+            font-weight: 800; font-size: 1.8rem; text-transform: uppercase;
+            position: relative; color: white; mix-blend-mode: lighten;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; width: 100%; background: #0f0f0f; clip: rect(0, 0, 0, 0);
+        }
+        .glitch-text::before { left: -2px; text-shadow: 2px 0 var(--danger); animation: glitch-anim 2s infinite linear alternate-reverse; }
+        .glitch-text::after { left: 2px; text-shadow: -2px 0 #00ffff; animation: glitch-anim 3s infinite linear alternate; }
         
-        /* Technical Grid Background */
-        .bg-grid-pattern {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.5) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
-        }
-        
-        /* Scroll Hide */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .warning-body { color: var(--text-muted); margin: 20px 0 30px; font-family: monospace; line-height: 1.6; }
+        .highlight-danger { color: var(--danger); font-weight: bold; }
+        .btn-danger { background: var(--danger); color: white; border: none; }
+        .btn-danger:hover { background: #b91c1c; box-shadow: 0 0 30px var(--danger-glow); }
+
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .shake { animation: shake 0.4s ease-in-out; border-bottom-color: #ef4444 !important; color: #ef4444; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        @keyframes glitch-anim {
+            0% { clip: rect(42px, 9999px, 44px, 0); } 5% { clip: rect(12px, 9999px, 59px, 0); } 10% { clip: rect(48px, 9999px, 29px, 0); } 15.0% { clip: rect(42px, 9999px, 73px, 0); } 20% { clip: rect(63px, 9999px, 27px, 0); } 25% { clip: rect(34px, 9999px, 55px, 0); } 30.0% { clip: rect(86px, 9999px, 73px, 0); } 35% { clip: rect(20px, 9999px, 20px, 0); } 40% { clip: rect(26px, 9999px, 60px, 0); } 45% { clip: rect(25px, 9999px, 66px, 0); } 50% { clip: rect(57px, 9999px, 98px, 0); } 55.0% { clip: rect(5px, 9999px, 46px, 0); } 60.0% { clip: rect(82px, 9999px, 31px, 0); } 65% { clip: rect(54px, 9999px, 27px, 0); } 70% { clip: rect(28px, 9999px, 99px, 0); } 75% { clip: rect(45px, 9999px, 69px, 0); } 80% { clip: rect(23px, 9999px, 85px, 0); } 85.0% { clip: rect(54px, 9999px, 84px, 0); } 90% { clip: rect(45px, 9999px, 47px, 0); } 95% { clip: rect(37px, 9999px, 20px, 0); } 100% { clip: rect(4px, 9999px, 91px, 0); }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <a href="#" class="flex items-center gap-2 group">
-                    <!-- REPLACE WITH YOUR LOGO/PICTURE PATH -->
-                    <img src="logo.jpg" alt="Furing Julius Czar N." class="w-10 h-10 rounded-lg object-cover border border-slate-700 group-hover:rotate-12 transition">
-                    
-                    <div class="flex flex-col">
-                        <span class="text-lg font-bold text-slate-900 font-display leading-tight tracking-tight">Furing<span class="text-blue-600">.</span>Tech</span>
-                        <span class="text-[10px] uppercase tracking-widest text-slate-500 font-medium">Systems Architect</span>
-                    </div>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#about" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">Credentials</a>
-                    <a href="#demos" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">System Demos</a>
-                    <!-- Portfolio Link -->
-                    <a href="https://saisaia.github.io/Portfolioko/" target="_blank" class="group flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition text-sm font-medium text-slate-700">
-                        <i class="fab fa-github text-lg group-hover:text-blue-600 transition"></i> 
-                        <span>Code Portfolio</span>
-                    </a>
-                    <a href="#contact" class="px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200 hover:shadow-blue-300 transform hover:-translate-y-0.5">
-                        Hire Me
-                    </a>
-                </div>
+    <canvas id="neural-canvas"></canvas>
+
+    <div class="interface-container" id="main-ui">
+        
+        <div class="brand-header">
+            <svg class="gpt-logo" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 11.2414.7439a6.1967 6.1967 0 0 0-5.6533 2.8913c-.3301.672-.548 1.393-.6535 2.1384a6.0462 6.0462 0 0 0-4.803 5.9813c0 .7255.1286 1.4383.3807 2.1152a5.9847 5.9847 0 0 0 .5157 4.9108 6.0462 6.0462 0 0 0 6.5098 2.9 6.0651 6.0651 0 0 0 4.0146 1.2665 6.1967 6.1967 0 0 0 5.6533-2.8913c.3301-.672.548-1.393.6535-2.1384a6.0462 6.0462 0 0 0 4.803-5.9813 5.9847 5.9847 0 0 0-.3807-2.1152zm-10.2819 5.6137l-2.9667-1.7129 1.1331-1.9624L12 12.8957l1.8336-1.1362 1.1331 1.9624L12 15.4348z"/></svg>
+            <h1>Czar's GPT Vault v3.1</h1>
+            <div class="subtitle">Secure Subscription Transfer Protocol</div>
+
+            <div class="system-alert">
+                <span>⚠️</span>
+                <span><b>SECURITY NOTICE:</b> The Unlock Password is identical to the account password.</span>
             </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
-        <!-- Tech Grid Background -->
-        <div class="absolute inset-0 bg-grid-pattern opacity-[0.4]"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col lg:flex-row items-center gap-16">
-                
-                <div class="lg:w-1/2 text-center lg:text-left">
-                    <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold border border-slate-700 mb-8 shadow-xl">
-                        <span class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
-                        OPEN FOR AUTOMATION PROJECTS
-                    </div>
-                    
-                    <h1 class="text-5xl lg:text-7xl font-bold font-display text-slate-900 leading-[1.1] mb-6 tracking-tight">
-                        I don't just "Assist."<br>
-                        I <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Engineer</span> Your Business.
-                    </h1>
-                    
-                    <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
-                        <strong>Hi, I'm Furing Julius Czar N.</strong><br>
-                        Most VAs manually type data. <strong>I write the code that does it for them.</strong>
-                        Transitioning from Full-Stack Development to Technical Assistance, I build the systems that put your operations on autopilot.
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="#demos" class="px-8 py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition shadow-xl shadow-blue-200/50 hover:shadow-blue-300 transform hover:-translate-y-1">
-                            Run Live Demos
-                        </a>
-                        <a href="#about" class="px-8 py-4 rounded-xl bg-white text-slate-700 font-bold border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-2 hover:border-slate-300">
-                            Verify Credentials <i class="fas fa-certificate text-slate-400"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Visual Element: The "Live Logic" Demo -->
-                <div class="lg:w-1/2 relative perspective-1000">
-                    <div class="relative w-full max-w-lg mx-auto animate-float">
-                        
-                        <!-- VS Code Style Window -->
-                        <div class="code-window">
-                            <!-- Title Bar -->
-                            <div class="bg-slate-900 px-4 py-3 flex items-center border-b border-slate-700">
-                                <div class="flex gap-2 mr-4">
-                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                </div>
-                                <div class="text-slate-400 text-xs font-mono flex gap-4">
-                                    <span class="text-white bg-slate-800 px-3 py-1 rounded-t border-t border-blue-500">lead_automation.js</span>
-                                    <span class="hover:text-white cursor-pointer">config.json</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Editor Area -->
-                            <div class="p-6 font-mono text-sm bg-[#0f172a] text-slate-300 leading-relaxed">
-                                <div class="flex">
-                                    <div class="text-slate-600 select-none mr-4 text-right">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12</div>
-                                    <div>
-                                        <p class="text-gray-500">// Simulating what I can build for you:</p>
-                                        <p>&nbsp;</p>
-                                        <p><span class="text-purple-400">const</span> <span class="text-blue-300">targetGoal</span> = {</p>
-                                        <p class="pl-4"><span class="json-key">"efficiency"</span>: <span class="json-string">"MAXIMIZED"</span>,</p>
-                                        <p class="pl-4"><span class="json-key">"errors"</span>: <span class="json-number">0</span>,</p>
-                                        <p class="pl-4"><span class="json-key">"manual_work"</span>: <span class="text-red-400">null</span></p>
-                                        <p>};</p>
-                                        <p>&nbsp;</p>
-                                        <p><span class="text-purple-400">async function</span> <span class="text-yellow-300">optimizeBusiness</span>() {</p>
-                                        <p class="pl-4 text-green-400">await selenium.automate("Chrome");</p>
-                                        <p class="pl-4 text-green-400">await crm.sync(targetGoal);</p>
-                                        <p class="pl-4"><span class="text-purple-400">return</span> <span class="json-string">"YOU SAVED 20 HOURS/WEEK"</span>;</p>
-                                        <p>}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Status Bar -->
-                            <div class="bg-blue-600 text-white text-[10px] px-3 py-1 flex justify-between font-mono">
-                                <span>main*</span>
-                                <span>Ln 12, Col 1  UTF-8  JavaScript</span>
-                            </div>
-                        </div>
-
-                        <!-- Floating Badge -->
-                        <div class="absolute -left-8 bottom-12 bg-white/90 backdrop-blur p-4 rounded-xl shadow-2xl border border-white z-30 flex items-center gap-4 animate-[bounce_3s_infinite]">
-                            <div class="bg-green-100 p-3 rounded-full text-green-600">
-                                <i class="fas fa-check-double text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">System Status</p>
-                                <p class="text-slate-900 font-bold text-lg">Ready to Deploy</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="grid-layout">
+            <div class="user-card glass-card" onclick="openAuth(1)">
+                <div class="avatar-circle">T</div>
+                <div class="card-name">TIMLING</div>
+                <div class="card-desc">Encrypted Gift Module</div>
+                <div class="card-badge">ChatGPT Plus • 12 Months</div>
+            </div>
+            <div class="user-card glass-card" onclick="openAuth(2)">
+                <div class="avatar-circle">J</div>
+                <div class="card-name">ATE JOY</div>
+                <div class="card-desc">Encrypted Gift Module</div>
+                <div class="card-badge">ChatGPT Plus • 12 Months</div>
             </div>
         </div>
-    </section>
 
-    <!-- Infinite Tech Stack Marquee -->
-    <section id="stack" class="py-12 bg-slate-900 overflow-hidden border-y border-slate-800">
-        <p class="text-center text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-8">My Technical Arsenal</p>
-        <div class="relative w-full">
-            <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-900 to-transparent z-10"></div>
-            <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-900 to-transparent z-10"></div>
+        <div class="section-divider">RESTRICTED // ADMIN MODULES</div>
+
+        <div class="private-grid">
+            <div class="private-card glass-card" onclick="showWarning('YouTube Premium')">
+                <div class="lock-icon">🔒</div> YouTube
+            </div>
+            <div class="private-card glass-card" onclick="showWarning('Netflix Ultra')">
+                <div class="lock-icon">🔒</div> Netflix
+            </div>
+            <div class="private-card glass-card" onclick="showWarning('Gemini Advanced')">
+                <div class="lock-icon">🔒</div> Gemini
+            </div>
+            <div class="private-card glass-card" onclick="showWarning('Grammarly Pro')">
+                <div class="lock-icon">🔒</div> Grammarly
+            </div>
+            <div class="private-card glass-card" onclick="showWarning('Quillbot Premium')">
+                <div class="lock-icon">🔒</div> Quillbot
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-box">
+            <button class="btn-close" onclick="closeModal('auth-modal')">&times;</button>
+            <h2 style="margin-bottom: 5px;">Verify Identity</h2>
+            <p style="color: #888; font-size: 0.9rem;">Enter passcode for <span id="target-name" style="color:white; font-weight:bold;"></span></p>
+            <div class="input-group">
+                <input type="text" id="pass-input" class="pass-input" placeholder="ENTER PASSWORD" autocomplete="off">
+            </div>
+            <button class="btn-unlock" onclick="attemptUnlock()">DECRYPT DATA</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reveal-modal">
+        <div class="modal-box" style="border-color: var(--primary);">
+            <button class="btn-close" onclick="closeModal('reveal-modal')">&times;</button>
+            <div style="color: var(--primary); font-size: 3rem; margin-bottom: 10px;">🔓</div>
+            <h2 style="margin: 0 0 20px 0;">Access Granted</h2>
+            <div class="reveal-content">
+                <div class="reveal-row">
+                    <span class="reveal-label">Status</span>
+                    <span class="reveal-value" style="color: #fff;">12 Months Active</span>
+                </div>
+                <div class="reveal-row">
+                    <span class="reveal-label">Email</span>
+                    <span class="reveal-value hack-text" id="final-email">loading...</span>
+                </div>
+                <div class="reveal-row" style="border-bottom: none;">
+                    <span class="reveal-label">Password</span>
+                    <span class="reveal-value hack-text" id="final-pass">loading...</span>
+                </div>
+            </div>
+            <a href="https://chat.openai.com" target="_blank" class="btn-unlock" style="display: block; text-decoration: none; margin-top: 30px; background: var(--primary); color: white;">
+                GO // LAUNCH CHATGPT
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="warning-modal">
+        <div class="modal-box danger-box">
+            <button class="btn-close" onclick="closeModal('warning-modal')">&times;</button>
+            <div class="warning-header">⛔</div>
+            <h2 class="glitch-text" data-text="ACCESS DENIED">ACCESS DENIED</h2>
             
-            <div class="flex whitespace-nowrap animate-scroll gap-16 text-slate-400 font-mono font-bold text-xl items-center">
-                <!-- Set 1 -->
-                <span class="flex items-center gap-3"><i class="fab fa-python text-blue-400"></i> Python</span>
-                <span class="flex items-center gap-3"><i class="fas fa-robot text-green-400"></i> Selenium</span>
-                <span class="flex items-center gap-3"><i class="fas fa-terminal text-red-400"></i> Kali Linux</span>
-                <span class="flex items-center gap-3"><i class="fas fa-bolt text-yellow-400"></i> Zapier</span>
-                <span class="flex items-center gap-3"><i class="fas fa-database text-orange-400"></i> Firebase</span>
-                <span class="flex items-center gap-3"><i class="fab fa-wordpress text-white"></i> WordPress</span>
-                <span class="flex items-center gap-3"><i class="fab fa-php text-indigo-400"></i> PHP</span>
-                <span class="flex items-center gap-3"><i class="fas fa-server text-gray-300"></i> cPanel</span>
-                <!-- Duplicate Set for Infinity -->
-                <span class="flex items-center gap-3"><i class="fab fa-python text-blue-400"></i> Python</span>
-                <span class="flex items-center gap-3"><i class="fas fa-robot text-green-400"></i> Selenium</span>
-                <span class="flex items-center gap-3"><i class="fas fa-terminal text-red-400"></i> Kali Linux</span>
-                <span class="flex items-center gap-3"><i class="fas fa-bolt text-yellow-400"></i> Zapier</span>
-                <span class="flex items-center gap-3"><i class="fas fa-database text-orange-400"></i> Firebase</span>
-                <span class="flex items-center gap-3"><i class="fab fa-wordpress text-white"></i> WordPress</span>
-                <span class="flex items-center gap-3"><i class="fab fa-php text-indigo-400"></i> PHP</span>
-                <span class="flex items-center gap-3"><i class="fas fa-server text-gray-300"></i> cPanel</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- My IT Background (Professional Summary) -->
-    <section id="about" class="py-24 bg-slate-50">
-        <div class="max-w-5xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <span class="text-blue-600 font-bold tracking-wide uppercase text-xs">The "IT Specialist" Difference</span>
-                <h2 class="text-3xl lg:text-4xl font-bold font-display text-slate-900 mt-2">Why Hire a Programmer as a VA?</h2>
-                
-                <p class="text-slate-600 mt-6 max-w-3xl mx-auto text-lg leading-relaxed">
-                    Most VAs need training. I need credentials.
-                    <br>
-                    With a background in <strong>Full-Stack Development</strong> (BoxLoad App) and <strong>Network Security</strong> (Kali/Ubuntu), I view administrative tasks through the lens of a developer. I build error-free workflows using Selenium and Python, ensuring your business runs smoothly without constant supervision.
-                </p>
-            </div>
-
-            <!-- Education & Certifications Row -->
-            <div class="mb-16 bg-white rounded-2xl p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-8 items-center justify-between">
-                <div>
-                    <h3 class="font-bold text-slate-900 text-xl mb-1 flex items-center gap-2"><i class="fas fa-graduation-cap text-blue-600"></i> Academic Education</h3>
-                    <p class="text-slate-800 font-bold mt-2">Sorsogon State University</p>
-                    <p class="text-slate-500 text-sm">Bachelor of Science in Information Technology (BSIT)</p>
-                </div>
-                <div class="h-px w-full md:w-px md:h-16 bg-slate-200"></div>
-                <div>
-                    <h3 class="font-bold text-slate-900 text-xl mb-1 flex items-center gap-2"><i class="fas fa-certificate text-green-600"></i> Key Competencies</h3>
-                    <div class="flex flex-wrap gap-2 mt-3">
-                        <span class="px-3 py-1 bg-slate-100 text-xs font-bold text-slate-700 rounded-full border border-slate-200">Browser Automation (Selenium)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-xs font-bold text-slate-700 rounded-full border border-slate-200">IoT Hardware</span>
-                        <span class="px-3 py-1 bg-slate-100 text-xs font-bold text-slate-700 rounded-full border border-slate-200">Linux Security</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- NEW SECTION: Verified Certifications -->
-            <div class="mb-16">
-                <h3 class="text-xl font-bold font-display text-slate-900 mb-8 text-center uppercase tracking-wide">Verified Professional Certifications</h3>
-                
-                <div class="grid md:grid-cols-3 gap-6">
-                    
-                    <!-- Cert 1: Software Architecture -->
-                    <div class="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition hover:border-purple-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-purple-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <div class="relative z-10">
-                            <div class="w-12 h-12 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-purple-600 shadow-sm mb-4">
-                                <i class="fas fa-layer-group text-xl"></i>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm leading-tight mb-2 h-10">Master in Software Architecture & Engineering</h4>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-[10px] text-slate-400 font-mono">ID: UDEMY-2025</span>
-                                <a href="https://ude.my/UC-125dba58-4fb4-4147-9793-0f537b3097ee" target="_blank" class="text-xs font-bold text-purple-600 hover:text-purple-700 flex items-center gap-1">
-                                    Verify <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cert 2: Full Stack Programming -->
-                    <div class="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition hover:border-yellow-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <div class="relative z-10">
-                            <div class="w-12 h-12 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-yellow-600 shadow-sm mb-4">
-                                <i class="fas fa-code text-xl"></i>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm leading-tight mb-2 h-10">CSS, JS, PHP & Python: All-in-One</h4>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-[10px] text-slate-400 font-mono">ID: UDEMY-2025</span>
-                                <a href="https://ude.my/UC-7191a6f7-9037-4e5c-8e4e-3a533bb2c786" target="_blank" class="text-xs font-bold text-yellow-600 hover:text-yellow-700 flex items-center gap-1">
-                                    Verify <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cert 3: Data Center IT -->
-                    <div class="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition hover:border-indigo-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <div class="relative z-10">
-                            <div class="w-12 h-12 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-indigo-600 shadow-sm mb-4">
-                                <i class="fas fa-server text-xl"></i>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm leading-tight mb-2 h-10">Data Center IT Infrastructure Fundamentals</h4>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-[10px] text-slate-400 font-mono">ID: UDEMY-2025</span>
-                                <a href="https://ude.my/UC-a97cd22b-8300-47fa-b1c8-0db7d5a8e157" target="_blank" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
-                                    Verify <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cert 4: Low Level Computing -->
-                    <div class="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition hover:border-red-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-red-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <div class="relative z-10">
-                            <div class="w-12 h-12 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-red-600 shadow-sm mb-4">
-                                <i class="fas fa-microchip text-xl"></i>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm leading-tight mb-2 h-10">Low-Level Computing for CS & Engineering</h4>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-[10px] text-slate-400 font-mono">ID: UDEMY-2025</span>
-                                <a href="https://ude.my/UC-7538e604-2fa4-4262-934d-fb228b43c865" target="_blank" class="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1">
-                                    Verify <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cert 5: Salesforce -->
-                    <div class="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition hover:border-blue-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <div class="relative z-10">
-                            <div class="w-12 h-12 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-blue-600 shadow-sm mb-4">
-                                <i class="fas fa-cloud text-xl"></i>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm leading-tight mb-2 h-10">Salesforce Admin Training: Advanced Skills</h4>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-[10px] text-slate-400 font-mono">ID: UDEMY-2025</span>
-                                <a href="https://ude.my/UC-e1410420-e06f-4e95-9722-489e101e5280" target="_blank" class="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                                    Verify <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cert 6: MS Office -->
-                    <div class="group bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition hover:border-green-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-green-50 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <div class="relative z-10">
-                            <div class="w-12 h-12 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-green-600 shadow-sm mb-4">
-                                <i class="fas fa-file-excel text-xl"></i>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm leading-tight mb-2 h-10">Microsoft Word, Excel & PowerPoint Mastery</h4>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-[10px] text-slate-400 font-mono">ID: UDEMY-2025</span>
-                                <a href="https://ude.my/UC-6fa9156f-714b-4417-b638-c19161120e157" target="_blank" class="text-xs font-bold text-green-600 hover:text-green-700 flex items-center gap-1">
-                                    Verify <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Demonstrations (Samples) -->
-    <section id="demos" class="py-24 bg-white relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-16">
-                <span class="text-blue-600 font-bold tracking-wide uppercase text-xs">Proof of Concept</span>
-                <h2 class="text-3xl lg:text-4xl font-bold font-display text-slate-900 mt-2">What I Can Build For You</h2>
-                <p class="text-slate-600 mt-4 max-w-2xl">
-                    I have created these sample projects to demonstrate my capability. <br>
-                    <strong>These are fully functional systems I can deploy in your business immediately.</strong>
-                </p>
-            </div>
-
-            <div class="space-y-20">
-                
-                <!-- Sample 1: The Automation -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg transition hover:border-blue-300">
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <div>
-                            <div class="flex items-center gap-3 mb-4">
-                                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">SAMPLE PROJECT #1</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-slate-900 mb-4">Automated Lead Nurture System</h3>
-                            <p class="text-slate-600 mb-6">
-                                <strong>The Concept:</strong> A system that eliminates manual data entry from contact forms. <br>
-                                <strong>My Role:</strong> I architected the logic, connected the API webhooks, and designed the data formatting steps.
-                            </p>
-                            
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
-                                <h4 class="font-bold text-xs text-slate-500 uppercase mb-3"><i class="fas fa-code mr-2"></i> The Logic I Used:</h4>
-                                <div class="space-y-3 text-sm font-mono text-slate-600">
-                                    <p>1. <span class="text-blue-600">Trigger:</span> Webhook (JSON Payload)</p>
-                                    <p>2. <span class="text-blue-600">Process:</span> Formatter (Split Name/Email)</p>
-                                    <p>3. <span class="text-blue-600">Action:</span> POST to HubSpot CRM</p>
-                                    <p>4. <span class="text-blue-600">Action:</span> Send Gmail (Template ID: 442)</p>
-                                </div>
-                            </div>
-                            
-                            <button onclick="document.getElementById('viz-1').src = document.getElementById('viz-1').src" class="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-2 mt-4">
-                                <i class="fas fa-play-circle"></i> Re-run Simulation
-                            </button>
-                        </div>
-                        
-                        <!-- LIVE VISUALIZATION: Automation Flowchart -->
-                        <div class="bg-slate-50 rounded-xl border border-slate-200 relative overflow-hidden flex flex-col items-center justify-center p-6 min-h-[300px]">
-                            <!-- Background Grid -->
-                            <div class="absolute inset-0" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; opacity: 0.5;"></div>
-                            
-                            <!-- Step 1 -->
-                            <div class="relative z-10 bg-white p-3 rounded-lg shadow-sm border border-slate-200 flex items-center gap-3 w-48 animate-[float_4s_ease-in-out_infinite]">
-                                <div class="w-8 h-8 bg-orange-100 rounded flex items-center justify-center text-orange-600"><i class="fas fa-bolt"></i></div>
-                                <div>
-                                    <div class="text-xs text-slate-400 font-bold">TRIGGER</div>
-                                    <div class="text-xs font-bold text-slate-700">New Webhook</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Arrow -->
-                            <div class="h-8 w-0.5 bg-slate-300 relative z-10"></div>
-                            
-                            <!-- Step 2 -->
-                            <div class="relative z-10 bg-white p-3 rounded-lg shadow-sm border border-slate-200 flex items-center gap-3 w-48 animate-[float_4s_ease-in-out_infinite]" style="animation-delay: 1s;">
-                                <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center text-blue-600"><i class="fas fa-code"></i></div>
-                                <div>
-                                    <div class="text-xs text-slate-400 font-bold">SCRIPT</div>
-                                    <div class="text-xs font-bold text-slate-700">Format Data</div>
-                                </div>
-                            </div>
-
-                            <!-- Arrow -->
-                            <div class="h-8 w-0.5 bg-slate-300 relative z-10"></div>
-
-                            <!-- Step 3 -->
-                            <div class="relative z-10 bg-white p-3 rounded-lg shadow-sm border border-slate-200 flex items-center gap-3 w-48 animate-[float_4s_ease-in-out_infinite]" style="animation-delay: 2s;">
-                                <div class="w-8 h-8 bg-green-100 rounded flex items-center justify-center text-green-600"><i class="fas fa-check-circle"></i></div>
-                                <div>
-                                    <div class="text-xs text-slate-400 font-bold">ACTION</div>
-                                    <div class="text-xs font-bold text-slate-700">Update CRM</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sample 2: The Maintenance -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg transition hover:border-indigo-300">
-                    <div class="grid md:grid-cols-2 gap-12 md:flex-row-reverse">
-                        
-                        <!-- LIVE VISUALIZATION: Maintenance Terminal -->
-                        <div class="rounded-xl bg-slate-900 border border-slate-800 p-4 font-mono text-xs text-green-400 min-h-[300px] flex flex-col shadow-2xl relative order-2 md:order-1">
-                            <div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-2">
-                                <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                <span class="ml-auto text-slate-500">maintenance_log.txt</span>
-                            </div>
-                            <div class="space-y-2 opacity-90">
-                                <p>> [System] Starting Monthly Maintenance Protocol...</p>
-                                <p>> [Backup] Connecting to Cloud Storage...</p>
-                                <p class="text-white">> [Backup] Uploading: site_backup_v24.zip (100%)</p>
-                                <p>> [Security] Running Wordfence Malware Scan...</p>
-                                <p>> [Security] Files Scanned: 14,203</p>
-                                <p class="text-blue-400">> [Security] Threats Found: 0</p>
-                                <p>> [Performance] Optimizing MySQL Database Tables...</p>
-                                <p>> [Updates] Updating Plugins (3/3)...</p>
-                                <p class="text-white font-bold bg-green-900/30 p-2 border-l-2 border-green-500 mt-4">
-                                    [SUCCESS] Maintenance Complete.<br>
-                                    Site Status: HEALTHY<br>
-                                    Load Speed: 0.8s
-                                </p>
-                                <p class="animate-pulse">_</p>
-                            </div>
-                        </div>
-
-                        <div class="order-1 md:order-2">
-                            <div class="flex items-center gap-3 mb-4">
-                                <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full">SAMPLE PROJECT #2</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-slate-900 mb-4">Web Security & Maintenance Protocol</h3>
-                            <p class="text-slate-600 mb-6">
-                                <strong>The Concept:</strong> A "Zero-Downtime" maintenance routine for WordPress sites.<br>
-                                <strong>My Role:</strong> Configuring firewall rules, setting up off-site cloud backups, and optimizing database tables.
-                            </p>
-                            
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
-                                <h4 class="font-bold text-xs text-slate-500 uppercase mb-3"><i class="fas fa-list-check mr-2"></i> My Standard Checklist:</h4>
-                                <ul class="space-y-2 text-sm text-slate-600">
-                                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Wordfence Firewall Configuration</li>
-                                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> UpdraftPlus Cloud Sync</li>
-                                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> PHP Version Compatibility Check</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sample 3: Custom Application (NEW) -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg transition hover:border-yellow-300">
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <div>
-                            <div class="flex items-center gap-3 mb-4">
-                                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-full">SAMPLE PROJECT #3</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-slate-900 mb-4">BoxLoad - Logistics/Inventory App</h3>
-                            <p class="text-slate-600 mb-6">
-                                <strong>The Concept:</strong> A custom-built web application for managing inventory and logistics tracking.<br>
-                                <strong>My Role:</strong> Full-Stack Development using Python/PHP, Firebase Database, and Bootstrap frontend.
-                            </p>
-                            
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
-                                <h4 class="font-bold text-xs text-slate-500 uppercase mb-3"><i class="fas fa-cogs mr-2"></i> Tech Stack:</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs text-slate-600">Python</span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs text-slate-600">PHP</span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs text-slate-600">Firebase</span>
-                                    <span class="px-2 py-1 bg-white border border-slate-200 rounded text-xs text-slate-600">Bootstrap</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- LIVE VISUALIZATION: Code Editor -->
-                        <div class="rounded-xl bg-[#282c34] border border-slate-700 p-4 font-mono text-xs shadow-2xl relative min-h-[300px] flex flex-col justify-center">
-                            <!-- Window Header -->
-                            <div class="absolute top-0 left-0 right-0 bg-[#21252b] px-4 py-2 rounded-t-xl flex items-center border-b border-slate-700">
-                                <div class="flex gap-1.5 mr-4">
-                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                </div>
-                                <span class="text-slate-400">inventory_sync.php</span>
-                            </div>
-                            
-                            <!-- Python Code Simulation -->
-                            <div class="mt-8 space-y-1 text-gray-300">
-                                <p><span class="text-purple-400">$db</span> = <span class="text-yellow-300">new</span> Firebase();</p>
-                                <p><span class="text-purple-400">$item_id</span> = <span class="text-green-400">"BOX-8821"</span>;</p>
-                                <br>
-                                <p><span class="text-blue-400">function</span> <span class="text-yellow-300">updateStock</span>(<span class="text-purple-400">$id</span>, <span class="text-purple-400">$qty</span>) {</p>
-                                <p class="pl-4"><span class="text-purple-400">$data</span> = [</p>
-                                <p class="pl-8"><span class="text-green-400">'stock_level'</span> => <span class="text-purple-400">$qty</span>,</p>
-                                <p class="pl-8"><span class="text-green-400">'last_updated'</span> => date(<span class="text-green-400">'Y-m-d H:i:s'</span>)</p>
-                                <p class="pl-4">];</p>
-                                <p class="pl-4"><span class="text-purple-400">return</span> <span class="text-purple-400">$db</span>->update(<span class="text-purple-400">$id</span>, <span class="text-purple-400">$data</span>);</p>
-                                <p>}</p>
-                                <br>
-                                <p><span class="text-gray-500">// Simulating Real-time Database Update...</span></p>
-                                <div class="bg-black/30 p-2 rounded border-l-2 border-green-500 text-green-400 mt-2 animate-pulse">
-                                    > Connecting to Firebase...<br>
-                                    > Inventory Updated: BOX-8821<br>
-                                    > Sync Complete.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer / CTA -->
-    <footer id="contact" class="bg-slate-900 text-white py-20">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl lg:text-5xl font-bold font-display mb-6">Ready to see a live demo?</h2>
-            <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
-                I may be new to the VA world, but I am an expert in technology. <br>
-                Let me build a <strong>free sample automation</strong> for your business to prove my skills.
-            </p>
-            
-            <div class="flex flex-col md:flex-row justify-center gap-6 items-center">
-                <button onclick="navigator.clipboard.writeText('juliusfuring45@gmail.com'); alert('Email copied!');" class="group px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 transition font-bold shadow-lg shadow-blue-900/50 flex items-center gap-2">
-                    <i class="fas fa-envelope"></i> 
-                    <span>Copy Email</span>
-                    <span class="text-xs font-normal bg-blue-700 px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">Click to Copy</span>
-                </button>
-                <a href="viber://chat?number=+639955870186" class="px-8 py-4 rounded-xl bg-purple-700 hover:bg-purple-600 transition font-semibold border border-purple-600 flex items-center gap-2">
-                    <i class="fab fa-viber text-xl"></i> Viber
-                </a>
-                <a href="https://saisaia.github.io/Portfolioko/" target="_blank" class="px-8 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 transition font-semibold border border-slate-700 flex items-center gap-2">
-                    <i class="fab fa-github text-xl"></i> IT Portfolio
-                </a>
+            <div class="warning-body">
+                SECURITY PROTOCOL BETA-7 ENGAGED.<br>
+                THE MODULE <span id="warning-target" class="highlight-danger"></span> IS CLASSIFIED.<br><br>
+                THIS NODE IS RESERVED FOR <span class="highlight-danger">ADMIN FULL CONTROL</span>. YOUR NEURAL SIGNATURE DOES NOT HAVE CLEARANCE.
             </div>
             
-            <div class="mt-16 pt-8 border-t border-slate-800 text-xs text-slate-500">
-                <p>&copy; 2025 Furing Julius Czar N. • Technical Systems Specialist</p>
-            </div>
+            <button class="btn-unlock btn-danger" onclick="closeModal('warning-modal')">
+                ACKNOWLEDGE & TERMINATE SESSION
+            </button>
         </div>
-    </footer>
+    </div>
 
+
+    <script>
+        // CONFIGURATION
+        const DATA = {
+            1: { name: "Timling", email: "Timling1011@gmail.com", pass: "@SAsa123123" },
+            2: { name: "Ate Joy", email: "yojjoy461@gmail.com", pass: "@SAsa123123" }
+        };
+
+        let currentId = null;
+
+        // 1. NEURAL BACKGROUND ANIMATION (Slightly adjusted colors for new theme)
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let points = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initPoints();
+        }
+
+        function initPoints() {
+            points = [];
+            const count = Math.floor(width * height / 18000); 
+            for(let i=0; i<count; i++) {
+                points.push({
+                    x: Math.random() * width, y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,width,height);
+            ctx.fillStyle = '#10a37f'; // Primary color dots
+            ctx.strokeStyle = 'rgba(16, 163, 127, 0.1)'; // Primary color lines
+
+            for(let i=0; i<points.length; i++) {
+                let p = points[i];
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > width) p.vx *= -1;
+                if(p.y < 0 || p.y > height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
+                for(let j=i+1; j<points.length; j++) {
+                    let p2 = points[j];
+                    let dist = Math.sqrt((p.x-p2.x)**2 + (p.y-p2.y)**2);
+                    if(dist < 120) {
+                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', resize);
+        resize(); draw();
+
+
+        // 2. APP LOGIC
+        const authModal = document.getElementById('auth-modal');
+        const revealModal = document.getElementById('reveal-modal');
+        const warningModal = document.getElementById('warning-modal');
+        const passInput = document.getElementById('pass-input');
+
+        function openAuth(id) {
+            currentId = id;
+            document.getElementById('target-name').innerText = DATA[id].name;
+            authModal.classList.add('modal-active');
+            passInput.value = ''; passInput.focus();
+        }
+
+        // NEW FUNCTION FOR PRIVATE SECTION
+        function showWarning(serviceName) {
+            document.getElementById('warning-target').innerText = serviceName.toUpperCase();
+            warningModal.classList.add('modal-active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('modal-active');
+        }
+
+        function attemptUnlock() {
+            const input = passInput.value.trim();
+            const correctPass = DATA[currentId].pass;
+            if (input === correctPass) {
+                authModal.classList.remove('modal-active');
+                revealModal.classList.add('modal-active');
+                runHackerEffect('final-email', DATA[currentId].email);
+                setTimeout(() => { runHackerEffect('final-pass', DATA[currentId].pass); }, 800);
+            } else {
+                passInput.classList.add('shake');
+                setTimeout(() => passInput.classList.remove('shake'), 400);
+            }
+        }
+
+        passInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') attemptUnlock();
+        });
+
+        // 3. MATRIX DECRYPTION EFFECT
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+        function runHackerEffect(elementId, finalText) {
+            const el = document.getElementById(elementId);
+            let iterations = 0;
+            const interval = setInterval(() => {
+                el.innerText = finalText.split("").map((letter, index) => {
+                        if(index < iterations) return finalText[index];
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    }).join("");
+                if(iterations >= finalText.length) clearInterval(interval);
+                iterations += 1/2;
+            }, 30);
+        }
+    </script>
 </body>
 </html>
